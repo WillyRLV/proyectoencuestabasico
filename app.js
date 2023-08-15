@@ -11,9 +11,28 @@ app.set('views', path.join(__dirname, 'views'));
 // Middleware para servir archivos estáticos desde la carpeta "public"
 app.use(express.static(path.join(__dirname, 'public')));
 // Ruta para la página de inicio
-app.get('/', (req, res) => {
-    res.render('index', { title: 'Página de inicio' });
-});
+// app.get('/', (req, res) => {
+//     res.render('index', { title: 'Página de inicio' , dato:'Hola'});
+// });
+const bigquery = require('./db'); // Importar la configuración de BigQuery
+// const bigquery = new BigQuery();
+
+app.get('/', async (req, res) => {
+  try {
+    const query =' SELECT * FROM `proyectooslo-390616.BaseOslo.BaseEncuestados` LIMIT 3';
+    const options = {
+      query: query,
+    //   location: 'US', // Cambia a tu ubicación si es diferente
+    };
+
+    const [rows] = await bigquery.query(options);
+
+    res.json(rows);
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).send('Hubo un error al consultar BigQuery.');
+  }
+})
 
 // Ruta para provocar un error
 app.get('/error', (req, res) => {

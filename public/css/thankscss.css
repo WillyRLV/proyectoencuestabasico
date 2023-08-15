@@ -1,0 +1,30 @@
+
+.content3 {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 40px;
+    text-align: center;
+    font-size: 15px;
+}
+
+.content-thanks h1 {
+    font-size: 2em;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: gray
+}
+
+.content-thanks p {
+    font-size: 1.3em;
+   inline-size: 300px;
+   font-weight: 300;
+   color: rgb(94, 86, 86);
+   margin: auto;
+}
+
+.content-thanks p a {
+  color: #3a9c7c;
+ 
+  font-weight: bolder;
+}
