@@ -1,6 +1,8 @@
 const express = require('express');
 const path = require('path');
 const app = express();
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 const logger = require('morgan');
 
 
@@ -11,28 +13,40 @@ app.set('views', path.join(__dirname, 'views'));
 // Middleware para servir archivos estáticos desde la carpeta "public"
 app.use(express.static(path.join(__dirname, 'public')));
 // Ruta para la página de inicio
-// app.get('/', (req, res) => {
-//     res.render('index', { title: 'Página de inicio' , dato:'Hola'});
-// });
-const bigquery = require('./db'); // Importar la configuración de BigQuery
+app.get('/', (req, res) => {
+    res.render('index', { title: 'Página de inicio' , dato:'Hola'});
+});
+
+app.post('/auth', (req, res) => {
+  // res.render('index', { title: 'Página de inicio' , dato:'Hola'});
+  const dniUser=req.body.dni
+  const x='74989635'
+  const obj={ title: 'Página de inicio' , dato:'Hola'}
+  // console.log(dniUser)
+  if(dniUser.toString()==x.toString()){
+    res.send(obj)
+  }
+});
+
+// const bigquery = require('./db'); // Importar la configuración de BigQuery
 // const bigquery = new BigQuery();
 
-app.get('/', async (req, res) => {
-  try {
-    const query =' SELECT * FROM `proyectooslo-390616.BaseOslo.BaseEncuestados` LIMIT 3';
-    const options = {
-      query: query,
-    //   location: 'US', // Cambia a tu ubicación si es diferente
-    };
+// app.get('/', async (req, res) => {
+//   try {
+//     const query =' SELECT * FROM `proyectooslo-390616.BaseOslo.BaseEncuestados` LIMIT 3';
+//     const options = {
+//       query: query,
+//     //   location: 'US', // Cambia a tu ubicación si es diferente
+//     };
 
-    const [rows] = await bigquery.query(options);
+//     const [rows] = await bigquery.query(options);
 
-    res.json(rows);
-  } catch (error) {
-    console.error('Error:', error);
-    res.status(500).send('Hubo un error al consultar BigQuery.');
-  }
-})
+//     res.json(rows);
+//   } catch (error) {
+//     console.error('Error:', error);
+//     res.status(500).send('Hubo un error al consultar BigQuery.');
+//   }
+// })
 
 // Ruta para provocar un error
 app.get('/error', (req, res) => {
